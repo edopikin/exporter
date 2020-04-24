@@ -2,65 +2,64 @@ package main
 
 import (
 	"fmt"
-	"go_classes/go_classes/Interfaceclass"
+	//"go_classes/go_classes/Interfaceclass"
+	"go_classes/go_classes/exporter"
 	"go_classes/go_classes/facebook"
 	"go_classes/go_classes/linkedin"
 	"go_classes/go_classes/twitter"
-	"os"
-	"go_classes/go_classes/exporter"
 )
 
 func main() {
 	// Prompt the user to select file format they want
+	fmt.Println(`
+	Input your designated file format index:
+	1. ".txt"
+	2. ".json"
+	3. ".xml"
+	4. ".yaml"
+	`)
+	var index int
+	fmt.Scan(&index)
+
+
 
 	fb := new(facebook.Facebook)
 	twtr := new(twitter.Twitter)
 	lnkdin := new(linkedin.Linkedin)
 
+	// 1 = .txt
+	if index == 1 {
+		format := "txt"
+		err := exporter.Export(fb, "fbdata", format)
+		err = exporter.Export(twtr, "twtrdata", format)
+		err = exporter.Export(lnkdin, "lnkdindata", format)
 
-	// if format is .txt
-	err :=  export(fb, "fbdata.txt")
-	err = export(twtr, "twtrdata.txt")
-	err = export(lnkdin, "lnkdindata.txt")
+		if err != nil {
+			panic(err)
+		}
+	// 2 = .json
+	}else if index == 2 {
+		format := "json"
+		err := exporter.Export(fb, "fbdata", format)
+		err = exporter.Export(twtr, "twtrdata", format)
+		err = exporter.Export(lnkdin, "lnkdindata", format)
 
-	// else if format is .json
+		if err != nil {
+			panic(err)
+		}
+	// 3 = .xml
+	}else if index == 3 {
+		format := "xml"
+		err := exporter.Export(fb, "fbdata", format)
+		err = exporter.Export(twtr, "twtrdata", format)
+		err = exporter.Export(lnkdin, "lnkdindata", format)
 
-	// else if format is .xml
-
+		if err != nil {
+			panic(err)
+		}
+	}
 	// else if format is .yaml
-
 
 	//else if format is invalid (not .txt, .xml, .yml, .json)
 	//  error = "Invalid format selected"
-
-	if err != nil {
-		panic(err)
-	}
-
-	//Scrollfeeds(fb, twtr, lnkdin)
-}
-
-// "ScrollFeeds prints all social media feeds"
-//func Scrollfeeds(platforms ...interfaceclass.SocialMedia) {
-//	for _, sm := range platforms {
-//		for _, fd := range sm.Feed() {
-//			fmt.Println(fd)
-//		}
-//		fmt.Println("===========")
-//	}
-//}
-
-func export(u interfaceclass.SocialMedia, filename string) error {
-	f, err:= os.OpenFile(filename, os.O_CREATE | os.O_WRONLY, 0755)
-	if err != nil{
-		return err
-	}
-	for _, fd := range u.Feed() {
-		n, err := f.Write([]byte(fd + "\n"))
-		if err != nil{
-			return err
-		}
-		fmt.Printf("Wrote %d bytes\n", n)
-	}
-	return nil
 }
